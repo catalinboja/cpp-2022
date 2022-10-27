@@ -227,7 +227,7 @@ input
 - an integer vector
 - vector size
 - start index and final index
-- if the value for any index is not ok then an ExceptionAssignment2 exception is thrown with "throw new ExceptionAssignment2 ()"
+- if the value for any index is not ok then return nullptr
 - if the start index is equal to the final index then a sub-vector is returned that contains the element from the start index position
 - if the start index is higher than the final index then return nullptr
 return

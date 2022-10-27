@@ -157,7 +157,7 @@ namespace Assignment1
 			int valoarePrag = 2000;
 			int* rezultat;
 			filterValuesBiggerThanVersion2(vectorInitial, nrElemente, valoarePrag, &rezultat);
-			Assert::AreEqual(rezultat[2], 1000);
+			Assert::IsNull(rezultat);
 		}
 
 

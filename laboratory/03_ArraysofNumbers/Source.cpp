@@ -49,6 +49,59 @@ void deleteValueFromArrayByIndex(int* array, int noValues, int index) {
 	array = copy;
 }
 
+void deleteValueFromArrayByIndexV2(int* * pointer, int noValues, int index) {
+
+	if (index < 0 || index >= noValues) {
+		throw "Wrong index";
+	}
+
+	int* copy = new int[noValues - 1];
+	for (int i = 0; i < index; i++) {
+		copy[i] = (* pointer)[i];
+	}
+	for (int i = index + 1; i < noValues; i++) {
+		copy[i - 1] = (* pointer)[i];
+	}
+
+	delete[] *pointer;
+	*pointer = copy;
+}
+
+void deleteValueFromArrayByIndexV3(int* & array, int noValues, int index) {
+
+	if (index < 0 || index >= noValues) {
+		throw "Wrong index";
+	}
+
+	int* copy = new int[noValues - 1];
+	for (int i = 0; i < index; i++) {
+		copy[i] = array[i];
+	}
+	for (int i = index + 1; i < noValues; i++) {
+		copy[i - 1] = array[i];
+	}
+
+	delete[] array;
+	array = copy;
+}
+
+int* deleteValueFromArrayByIndexV4(int* array, int noValues, int index) {
+
+	if (index < 0 || index >= noValues) {
+		throw "Wrong index";
+	}
+
+	int* copy = new int[noValues - 1];
+	for (int i = 0; i < index; i++) {
+		copy[i] = array[i];
+	}
+	for (int i = index + 1; i < noValues; i++) {
+		copy[i - 1] = array[i];
+	}
+
+	return copy;
+}
+
 
 
 void doSomething() {
@@ -84,6 +137,16 @@ int main() {
 	printArray(copy, noMoreValues);
 
 	cout << endl << "**************** After delete:";
-	deleteValueFromArrayByIndex(copy, noMoreValues, 4);
+	//deleteValueFromArrayByIndex(copy, noMoreValues, 4);
+	
+	
+	//deleteValueFromArrayByIndexV2(&copy, noMoreValues, 4);
+	//deleteValueFromArrayByIndexV3(copy, noMoreValues, 4);
+
+	int* result = deleteValueFromArrayByIndexV4(copy, noMoreValues, 4);
+
+	delete[] copy;
+	copy = result;
+
 	printArray(copy, noMoreValues - 1);
 }
