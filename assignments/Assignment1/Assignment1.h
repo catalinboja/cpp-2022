@@ -209,8 +209,7 @@ input
 - un vector de numere intregi
 - dimensiunea vectorului
 - index start si index final
-	- daca valoarea pentru oricare index nu este ok atunci se arunca o exceptie de tip
-		ExceptieAssignment2 cu "throw new ExceptieAssignment2()"
+	- daca valoarea pentru oricare index nu este ok atunci se returneaza null pointer
 	- daca index start este egal cu index final atunci se returneaza un sub-vector ce contine elementul de pe pozitia index start
 	- daca index start este mai mare decat index final atunci se returneaza nullptr
 return
