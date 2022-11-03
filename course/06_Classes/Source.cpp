@@ -2,11 +2,22 @@
 #include <string>
 using namespace std;
 
+
+//global variable
+//const int MINIMUM_NAME_SIZE = 3;
+
 class Student {
 private:
 	string name = "John Doe"; //char* name | char name[100]
 	int* grades = nullptr;
 	int noGrades = 0;
+
+	const static int MINIMUM_NAME_SIZE = 3;
+	const static int MINIMUM_GRADE = 1;
+	const static int MAXIMUM_GRADE = 10;
+	static int NO_STUDENTS_OBJECTS;
+
+
 public:
 	//public interface of the class
 	string getName() {
@@ -15,7 +26,7 @@ public:
 
 	void setName(string name) {
 		//should have at least 3 chars
-		if (name.size() < 3) {
+		if (name.size() < Student::MINIMUM_NAME_SIZE) {
 			throw "Wrong name. Too short";
 		}
 		//shadowing
@@ -46,7 +57,7 @@ public:
 		}
 
 		for (int i = 0; i < noNewGrades; i++) {
-			if (newGrades[i] <= 0 || newGrades[i] > 10) {
+			if (newGrades[i] < Student::MINIMUM_GRADE || newGrades[i] > Student::MAXIMUM_GRADE) {
 				throw "Grade not ok";
 			}
 		}
@@ -82,6 +93,10 @@ private:
 		return copy;
 	}
 };
+
+
+//init the static non-const variable
+int Student::NO_STUDENTS_OBJECTS = 0;
 
 int main() {
 	Student student;
