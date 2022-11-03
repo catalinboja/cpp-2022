@@ -12,13 +12,38 @@ private:
 	int* grades = nullptr;
 	int noGrades = 0;
 
+	static int NO_STUDENTS_OBJECTS;
+
+public:
+
 	const static int MINIMUM_NAME_SIZE = 3;
 	const static int MINIMUM_GRADE = 1;
 	const static int MAXIMUM_GRADE = 10;
-	static int NO_STUDENTS_OBJECTS;
+
+	//default the ctor
+	Student() {
+		cout << endl << "Calling Student default ctor";
+	}
+
+	//ctor with arguments
+	Student(string name) {
+		this->setName(name);
+	}
+
+	Student(string name, int* grades, int noGrades) {
+		this->setName(name);
+		this->setGrades(grades, noGrades);
+	}
 
 
-public:
+	//other with different order for the arguments
+	//not necessary as you already have the previous one
+	Student(int* grades, int noGrades, string name) {
+		this->setName(name);
+		this->setGrades(grades, noGrades);
+	}
+
+
 	//public interface of the class
 	string getName() {
 		return this->name;
@@ -82,6 +107,11 @@ public:
 		}
 	}
 
+	static int getNoStudentsInMemory() {
+		//this does not exist here
+		return Student::NO_STUDENTS_OBJECTS;
+	}
+
 private:
 	int* copyArray(int* array, int noElements) {
 		int* copy = new int[noElements];
@@ -92,6 +122,11 @@ private:
 		//memcpy(copy, copy, noElements * sizeof(int));
 		return copy;
 	}
+
+	//make the default ctor private;
+	//Student() {
+	//cout << endl << "Calling Student default ctor";
+	//}
 };
 
 
@@ -130,4 +165,23 @@ int main() {
 	//}
 
 	alice.print();
+
+	//check student name min size
+	string newName = "John";
+	if (newName.size() >= Student::MINIMUM_NAME_SIZE) {
+		student.setName(newName);
+	}
+	//Student::MINIMUM_NAME_SIZE = 1;
+
+	cout << endl << "No of created students is " 
+		<< Student::getNoStudentsInMemory();
+
+	//Student bob;
+	//bob.setName("Bob");
+
+	Student bob("Bob");
+	bob.print();
+
+	Student vader("Vader", grades, 3);
+	vader.print();
 }
