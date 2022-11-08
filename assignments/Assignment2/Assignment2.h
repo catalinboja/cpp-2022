@@ -161,11 +161,3 @@ double getTheMostExpensiveVehicle(Vehicle** vector, int nr_masini)
 	return 0.0f;
 }
 
-
-
-int main()
-{
-	//Playgroud
-	//Testati aici functiile dorite si folositi debugger-ul pentru eventualele probleme
-	//Test here the functions that you need and use the debugger to identify the problems
-}
