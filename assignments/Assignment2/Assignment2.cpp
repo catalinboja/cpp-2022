@@ -13,11 +13,22 @@ namespace Assignment2
 		TEST_METHOD(_01TestClassDefaultValues)
 		{
 
-			Vehicle vehicle;
-			Assert::IsNull(vehicle.model, L"Vehicle::model attribute has not a proper default value");
-			Assert::IsTrue(vehicle.brand._Equal("-"), L"Vehicle::brand attribute has not the required default value");
-			Assert::IsFalse(vehicle.hasBattery, L"Vehicle::hasBattery attribute has not the required default value");
-			Assert::IsTrue(vehicle.price == 0, L"Vehicle::price attribute has not the required default value");
+			Vehicle v;
+
+			if (v.model == nullptr || strcmp(v.model, "Unknown") == 0)
+				Assert::IsTrue(true);
+			else
+				Assert::Fail(L"Vehicle::model attribute has not a proper default value");
+
+			if (v.brand._Equal("-") || v.brand == "Unknown")
+				Assert::IsTrue(true);
+			else
+				Assert::Fail(L"Vehicle::model attribute has not a proper default value");
+
+			if (v.price == 0 || abs(v.price - 7000) < 0.01)
+				Assert::IsTrue(true);
+			else
+				Assert::Fail(L"Vehicle::price attribute has not the required default value");
 		}
 
 		TEST_METHOD(_02TestDefaultCtor)
@@ -27,9 +38,9 @@ namespace Assignment2
 				L"Default ctor does not init properly Vehicle::brand");
 			Assert::IsTrue(strcmp(a.model,"Unknown") == 0,
 				L"Default ctor does not init properly Vehicle::model");
-			Assert::IsTrue(a.hasBattery,
+			Assert::IsFalse(a.hasBattery,
 				L"Default ctor does not init properly Vehicle::hasBattery");
-			Assert::IsTrue(abs(a.price - 5000) < 0.01,
+			Assert::IsTrue(abs(a.price - 7000) < 0.01,
 				L"Default ctor does not init properly Vehicle::price");
 
 			//test if in Heap
