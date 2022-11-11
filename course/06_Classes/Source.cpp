@@ -113,7 +113,7 @@ public:
 	}
 
 private:
-	int* copyArray(int* array, int noElements) {
+	static int* copyArray(int* array, int noElements) {
 		int* copy = new int[noElements];
 		for (int i = 0; i < noElements; i++) {
 			copy[i] = array[i];
