@@ -177,7 +177,7 @@ private:
 	}
 
 	Student operator=(Student source) {
-
+		//incomplete
 	}
 };
 
@@ -207,9 +207,9 @@ int add(int a, int b, int c) {
 	return a + b + c;
 }
 
-int add(Student student, int a) {
-
-}
+//Student add(Student student, int a) {
+//
+//}
 
 Student operator+(Student student, int value) {
 	//create a nee student
