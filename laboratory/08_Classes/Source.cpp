@@ -62,6 +62,10 @@ public:
 	}
 
 	void operator=(const SantaList& list) {
+
+		//what happens if you do obj1 = obj1  ???
+		//is this version ok ?
+
 		//don't do it
 		//this->kidName = list.kidName;
 
