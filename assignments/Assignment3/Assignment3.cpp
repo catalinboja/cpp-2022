@@ -43,7 +43,7 @@ namespace Assignment3
 			Assert::AreEqual(t.noRides, 0, L"Default ctor does not init properly Taxi::noRides");
 			Assert::IsTrue(abs(t.pricePerKm - 2.5) < 0.01,
 				L"Default ctor does not init properly Taxi::pricePerKm");
-			Assert::AreEqual(t.type, TaxiType::CLASSIC);
+			Assert::AreEqual((int)t.type, 3, L"Default ctor does not init properly Taxi::type");
 
 			//test if in Heap
 			delete[] t.kmPerRide;
@@ -53,137 +53,128 @@ namespace Assignment3
 		{
 			Taxi t(100, TaxiType::UBER, 3.7);
 
-			Assert::AreEqual(t.taxiId, 100, L"Default ctor does not init properly Taxi::taxiId");
+			Assert::AreEqual(t.taxiId, 100, L"Ctor with params does not init properly Taxi::taxiId");
 			Assert::IsTrue(t.lastDestination == "None",
-				L"Default ctor does not init properly Taxi::lastDestination");
-			Assert::IsNull(t.kmPerRide, L"Default ctor does not init properly Taxi::kmPerRide");
-			Assert::AreEqual(t.noRides, 0, L"Default ctor does not init properly Taxi::noRides");
+				L"Ctor with params does not init properly Taxi::lastDestination");
+			Assert::IsNull(t.kmPerRide, L"Ctor with params does not init properly Taxi::kmPerRide");
+			Assert::AreEqual(t.noRides, 0, L"Ctor with params does not init properly Taxi::noRides");
 			Assert::IsTrue(abs(t.pricePerKm - 3.7) < 0.01,
-				L"Default ctor does not init properly Taxi::pricePerKm");
-			Assert::AreEqual(t.type, TaxiType::UBER);
+				L"Ctor with params does not init properly Taxi::pricePerKm");
+			Assert::AreEqual((int)t.type, (int)TaxiType::UBER, L"Ctor with params does not init properly Taxi::type");
 
 			//test if in Heap
 			delete[] t.kmPerRide;
 		}
 
-		TEST_METHOD(_04TestGetStandardType)
+		TEST_METHOD(_04TestParamsCtor)
 		{
-			TaxiType rezultat = Taxi::getStandardType("petrol");
-			Assert::IsTrue(rezultat == 5, L"getStandardType does not return ok for 'petrol'");
-			rezultat = Taxi::getStandardType("hybrid");
-			Assert::IsTrue(rezultat == 10, L"getStandardType does not return ok for 'hybrid'");
-			rezultat = Taxi::getStandardType("electric");
-			Assert::IsTrue(rezultat == 15, L"getStandardType does not return ok for 'electric'");
+			int records[] = { 10,20,30 };
+			Taxi t(100, TaxiType::UBER, 2.5, records, 3);
+
+			Assert::AreEqual(t.taxiId, 100, L"Ctor with params does not init properly Taxi::taxiId");
+			Assert::IsTrue(t.lastDestination == "None",
+				L"Ctor with params does not init properly Taxi::lastDestination");
+			Assert::IsNotNull(t.kmPerRide, L"Ctor with params does not init properly Taxi::kmPerRide");
+			Assert::AreEqual(t.noRides, 3, L"Ctor with params does not init properly Taxi::noRides");
+			Assert::IsTrue(abs(t.pricePerKm - 2.5) < 0.01,
+				L"Ctor with params does not init properly Taxi::pricePerKm");
+			Assert::AreEqual((int)t.type, (int)TaxiType::UBER, L"Ctor with params does not init properly Taxi::type");
+			Assert::AreEqual(t.kmPerRide[0], (float)10, L"Ctor with params does not init properly Taxi::kmPerRide");
+			Assert::AreEqual(t.kmPerRide[2], (float)30, L"Ctor with params does not init properly Taxi::kmPerRide");
+
+			//test if in Heap
+			delete[] t.kmPerRide;
 		}
 
-		TEST_METHOD(_05TestGetType)
+		TEST_METHOD(_05TestParamsCtorAndStatic)
 		{
-			Taxi Taxi;
-			Taxi.hasBattery = true;
+			Taxi::NO_UBER_TAXIES = 0;
+			Taxi t1(100, TaxiType::UBER, 3.7);
+			Taxi t2(100, TaxiType::BOLT, 3.7);
+			int records[] = { 10,20,30 };
+			Taxi t3(100, TaxiType::UBER, 2.5, records, 3);
+			Taxi t4(100, TaxiType::BOLT, 2.5, records, 3);
 
-			TaxiType rezultat = Taxi.getType();
-			Assert::IsTrue(rezultat == 15, L"Taxi::getType does not return ok if the Taxi has battery");
+			Assert::AreEqual(Taxi::NO_UBER_TAXIES, 2, L"Ctor(s) with params does not init properly Taxi::NO_UBER_TAXIES");
 
-			Taxi.hasBattery = false;
-			rezultat = Taxi.getType();
-			Assert::IsTrue(rezultat == 5, L"Taxi::getType does not return ok if the Taxi does NOT have battery");
-		}
-
-		TEST_METHOD(_06TestApplyDiscount)
-		{
-			auto func1 = [] { Taxi a; a.price = 9876; a.applyDiscount(0); };
-			Assert::ExpectException<TaxiException>(func1, L"Taxi::applyDiscount does not throw TaxiException for values less than 1");
-
-			auto func2 = [] { Taxi a; a.price = 9876; a.applyDiscount(55); };
-			Assert::ExpectException<TaxiException>(func2, L"Taxi::applyDiscount does not throw TaxiException for values greater than 50");
-
-			Taxi a;
-			a.price = 9876;
-			a.applyDiscount(25);
-			Assert::IsTrue(abs(a.price - 7407) < 0.01,
-				L"Taxi::applyDiscount does not apply correctly the discount");
-		}
-
-
-		TEST_METHOD(_07TestSetLicensePlatesNumber)
-		{
-			Taxi a;
-			char plates[] = "B101POO";
-			a.setLicensePlatesNumber(plates);
-			char* rezultat = a.getLicensePlatesNumber();
-
-			Assert::IsTrue(strcmp(rezultat, plates) == 0, L"LicensePlates functions are not ok");
-			Assert::IsFalse(rezultat == plates, L"LicensePlates functions are not ok. Shallow copy");
-		}
-
-		TEST_METHOD(_08TestSetModel)
-		{
-			Taxi a;
-			char model[] = "Model Y";
-			a.setModel(model);
-
-			Assert::IsTrue(strcmp(a.model, model) == 0, L"SetModel does not init ok model attribute");
-			Assert::IsFalse(a.model == model, L"SetModel not ok. Shallow copy");
-
-			auto func1 = [] { Taxi a; a.setModel("Y"); };
-			Assert::ExpectException<TaxiException>(func1, L"Taxi::setModel does not throw TaxiException short model names");
-
-			auto func2 = [] { Taxi a; a.setModel("model Y"); };
-			Assert::ExpectException<TaxiException>(func2,
-				L"Taxi::setModel does not throw TaxiException for names that don't start with capital letter");
-
-			auto func3 = [] { Taxi a; a.setModel("5 model Y"); };
-			Assert::ExpectException<TaxiException>(func3,
-				L"Taxi::setModel does not throw TaxiException for names that don't start with capital letter");
 
 		}
 
-		TEST_METHOD(_09TestGetModel)
+		TEST_METHOD(_06CopyConstructor)
 		{
-			Taxi a;
-			char model[] = "Model Y";
-			a.model = (char*)model;
+			Taxi::NO_UBER_TAXIES = 0;
+			int records[] = { 10,20,30 };
+			Taxi t(100, TaxiType::UBER, 2.5, records, 3);
+			t.lastDestination = "Bucharest";
+			Taxi copy = t;
 
-			char* result = a.getModel();
+			Assert::AreEqual(copy.taxiId, t.taxiId, L"Copy Ctor does not init properly Taxi::taxiId");
+			Assert::AreEqual(copy.lastDestination, t.lastDestination, L"Copy Ctor does not init properly Taxi::lastDestination");
+			Assert::AreEqual(copy.noRides, t.noRides, L"Copy Ctor does not init properly Taxi::noRides");
+			Assert::AreEqual(copy.pricePerKm, t.pricePerKm, L"Copy Ctor does not init properly Taxi::pricePerKm");
+			Assert::AreEqual((int)copy.type, (int)t.type, L"Copy Ctor does not init properly Taxi::type");
+			Assert::AreNotEqual(copy.kmPerRide, t.kmPerRide, L"Copy Ctor does not init properly Taxi::kmPerRide");
+			Assert::AreEqual(Taxi::NO_UBER_TAXIES, 2, L"Copy Ctor does not change properly Taxi::NO_UBER_TAXIES");
+		}
 
-			Assert::IsNotNull(result, L"GetModel NOT ok. Returns null");
-			Assert::IsTrue(strcmp(a.model, result) == 0, L"GetModel does NOT return ok the model attribute value");
-			Assert::IsFalse(a.model == result, L"GetModel NOT ok. Returns address");
+		TEST_METHOD(_07Destructor)
+		{
+			Taxi::NO_UBER_TAXIES = 0;
+			Taxi* taxi1 = new Taxi(100, TaxiType::UBER, 3.7);
+			Taxi* taxi2 = new Taxi(100, TaxiType::UBER, 3.7);
+			delete taxi1;
+			Assert::AreEqual(Taxi::NO_UBER_TAXIES, 1, L"Destructor does not change properly Taxi::NO_UBER_TAXIES");
 		}
 
 
-		TEST_METHOD(_10TestDestructor)
+		TEST_METHOD(_08OperatorEquals)
 		{
+			Taxi::NO_UBER_TAXIES = 0;
+			Taxi t(100, TaxiType::UBER, 2.9);
+			Taxi t2(100, TaxiType::OTHER, 2.9);
+			t.lastDestination = "Ploiesti";
 
-			Taxi* pa = new Taxi();
-			Taxi::NO_TaxiS = 0;
-			delete pa;
-			Assert::IsTrue(Taxi::NO_TaxiS == -1,
-				L"The destructor does NOT change NO_TaxiS correctly");
+			Taxi copy(200, TaxiType::BOLT, 3.7);
+
+			Taxi::NO_UBER_TAXIES = 0;
+
+			copy = t;
+
+			Assert::AreEqual(copy.taxiId, 200, L"Operator = does not init properly Taxi::taxiId");
+			Assert::AreEqual(copy.lastDestination, t.lastDestination, L"Operator = does not init properly Taxi::lastDestination");
+			Assert::AreEqual(copy.noRides, t.noRides, L"Operator = does not init properly Taxi::noRides");
+			Assert::AreEqual(copy.pricePerKm, t.pricePerKm, L"Operator = does not init properly Taxi::pricePerKm");
+			Assert::AreEqual((int)copy.type, (int)t.type, L"Operator = does not init properly Taxi::type");
+			Assert::AreNotEqual(copy.kmPerRide, t.kmPerRide, L"Operator = does not init properly Taxi::kmPerRide");
+			Assert::AreEqual(Taxi::NO_UBER_TAXIES, 1, L"Operator = does not change properly Taxi::NO_UBER_TAXIES");
+
+			copy = t2;
+
+			Assert::AreEqual(Taxi::NO_UBER_TAXIES, 0, L"Operator = does not change properly Taxi::NO_UBER_TAXIES");
 		}
 
-		TEST_METHOD(_11TestComputeFleetValue)
+
+		TEST_METHOD(_09TestTotalRevenue)
 		{
-			Taxi Taxis[3];
-			Taxi a1, a2, a3;
-			a1.price = 1111.5;
-			a2.price = 2222.5;
-			a3.price = 3333.4;
-			Taxis[0] = a1; Taxis[1] = a2; Taxis[2] = a3;
-			double rezultat = computeFleetValue(Taxis, 3);
-			Assert::IsTrue(abs(rezultat - 6667.4) < 0.01, L"computeFleetValue does not compute correctly the value");
+			int records[] = { 10,10,10 };
+			Taxi t(1, TaxiType::UBER, 1, records, 3);
+
+			float totalRevenue = t.getTotalRevenue();
+
+			Assert::AreEqual(totalRevenue, (float)30, L"getTotalRevenue() does not compute the correct value");
 		}
 
-		TEST_METHOD(_12TestGetTheMostExpensiveTaxi)
+		TEST_METHOD(_10TestComputeFleetValue)
 		{
-			Taxi a1, a2, a3;
-			a1.price = 200.5;
-			a2.price = 200.7;
-			a3.price = 154.5;
-			Taxi** vector = new Taxi * [3];
-			vector[0] = &a1; vector[1] = &a2; vector[2] = &a3;
-			double rezultat = getTheMostExpensiveTaxi(vector, 3);
-			Assert::IsTrue(abs(200.7 - rezultat) < 0.01,
-				L"The returned value is not the price of the most expensive Taxi");
+			Taxi taxis[3];
+			int records[] = { 10,10,10 };
+			Taxi t(1, TaxiType::UBER, 1, records, 3);
+
+			taxis[0] = t;
+			taxis[1] = t;
+			taxis[2] = t;
+			double rezultat = Taxi::computeFleetValue(taxis, 3);
+			Assert::IsTrue(abs(rezultat - 90) < 0.01, L"computeFleetValue does not compute correctly the value");
 		}
+	};
 }

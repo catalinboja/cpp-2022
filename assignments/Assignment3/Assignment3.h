@@ -21,7 +21,6 @@ class TaxiException {
 
 };
 
-//TO BE changed based on requirements
 enum TaxiType { UBER, BOLT, BLACK_CAB, CLASSIC, OTHER};
 
 class Taxi
@@ -38,7 +37,7 @@ public:
 	const int taxiId;
 	string lastDestination;
 	int noRides = -1;
-	float* kmPerRide;		//used to store the on of kms of each ride
+	float* kmPerRide;		//used to store the no of kms of each ride
 	double pricePerKm;
 	TaxiType type;
 
@@ -58,118 +57,134 @@ public:
 
 	/*
 			Requirement 3. Modify the constructor with 3 parameters: id, type, price
-	this will initialize the 3 attributes with the received values. Last destination is initialized with "None"
-
+	this will initialize the 3 attributes with the received values. 
+	Last destination is initialized with "None"
+	The Taxi id must be the one received as parameter
 	*/
-	Taxi(int id, TaxiType type, double price):taxiId(id)
+
+	Taxi(int id, TaxiType type, double price):taxiId(0)
 	{
 	}
 
 	/*
 		Requirement 4. Modify the constructor with 5 parameters: id, type, price, old records, no previous rides
-this will initialize the 3 attributes with the received values. Last destination is initialized with "None"
+	this will initialize the 5 attributes with the received values. 
+	Last destination is initialized with "None"
+	The Taxi id must be the one received as parameter
+	*/
 
-*/
-	Taxi(int id, TaxiType type, double price, int* records, int noPreviousRides) :taxiId(id)
+	Taxi(int id, TaxiType type, double price, int* records, int noPreviousRides) :taxiId(0)
+	{
+	}
+
+	/*
+	Requirement 5. Modify the constructors (both) with parameters so if the Taxi type is UBER
+	then NO_UBER_TAXIES is incremented by 1
+	*/
+
+
+	/*
+		Requirement 6. Implement the class copy constructor without doing shallow copy
+		The copy id must be identical with the given object
+		If the copy is a UBER taxi the NO_UBER_TAXIES values must be updated accordingly
+	*/
+	Taxi(const Taxi& taxi):taxiId(0)
 	{
 	}
 
 
 	/*
-			Requirement 4. The function below return a variable of type enum (TaxiType, the enum defined above)
-	modify the enum so it can have only three posible values
-	Those are: 5 - petrol, 10 - hybrid, 15 - electric
-	the function receives one parameter which is a string from the ones above
-	("petrol", "hybrid", "electric") and returns the enum value
+			Requirement 7. Implement the class destructor to remove the chance to generate memory leaks
+			If the destroyed Taxi is an UBER then NO_UBER_TAXIES must be updated
 
 	*/
-	static TaxiType getStandardType(string type)
+	~Taxi()
 	{
-		return (TaxiType)0;
+
 	}
 
 
 	/*
-			Requirement 5. The function below return a variable of type enum (TaxiType, the enum defined above)
-	Modify the enum so it can have only three posible values: 5 - PETROL, 10 - HYBRID, 15 - ELECTRIC
-	The function must return ELECTRIC if the vehicle has battery. Otherwise must return PETROL
-
-	*/
-	TaxiType getType()
-	{
-		return (TaxiType)0;
-	}
-
-
-	/*
-			Requirement 6. Modify the applyDiscount method in order to give a discount from the price
-	the discount is a percentage between 1% and 50%
-	the function should modify the price with the value obtained after the discount is applied
-	the function shoud throw an exception for values outside [1,50]	with throw TaxiException();
+			Requirement 8. Overload the = operator so you don't genereate shallow copy and you avoid self equality (obj = obj)
+			NO_UBER_TAXIES must be updated based on different cases
 	*/
 
-	void applyDiscount(int percent)
+	void operator=(const Taxi& taxi)
 	{
 	}
 
-
 	/*
-			Requirement 7. Add to the class a new attribute called 'licensePlatesNumber'
-		this is a statically allocated char array with the maximum length 9
-		Modify the methods setLicensePlatesNumber and getLicensePlatesNumber
-		in such a manner that they will modify (first one) and return (second one) the value of this field
-
+			Requirement 9. Implement the next method that computes the total revenue of the Taxi
+			based on the kms records and the price per km
 	*/
-	void setLicensePlatesNumber(const char* licensePlates)
+	float getTotalRevenue()
 	{
+		return 0;
 	}
 
-	char* getLicensePlatesNumber()
+
+	/*
+		Requirement 10. Implement the next method that computes the total revenue of a Taxi fleet
+	*/
+
+	static double computeFleetValue(Taxi vehicles[], int noVehicles)
 	{
-		return nullptr;
+		return 0;
 	}
-
-	/*
-			Requirement 8. Implement setModel in order to change the vehicle model
-		The method should not do shallow copy
-		The method should not generate memory leaks
-		The method should validate that the model length is greater or equal than LICENSE_MIN_LENGTH. Otherwise throws exception with throw TaxiException();
-		The method should validate that the model name starts with a capital letter (A - Z). Otherwise throws exception with throw TaxiException();
-	*/
-	void setModel(const char* model) {
-
-	}
-
-
-	/*
-			Requirement 9. Implement getModel in order to get the vehicle model
-		The method should return a copy of the model and not its address/pointer
-	*/
-	char* getModel() {
-		return nullptr;
-	}
-
-	/*
-		Requirement 10. Add a desctructor to the class that will decrement NO_VEHICLES each time a vehicle is detroyed
-	*/
 
 };
 
-int Taxi::NO_VEHICLES = 0;
+int Taxi::NO_UBER_TAXIES = 0;
 
 
+/*
+	11. Overload the next operators so the next functions instructions will be valid
+	There are no unit tests for this requirement
+*/
 
-//11. The function below receive as arguments an array of cars and its number of elements
-//compute and return the todal value of the vehicles by adding the prices (pret) of all the cars from the array
-double computeFleetValue(Taxi vehicles[], int noVehicles)
-{
-	return 0;
+
+void operatorsTest() {
+
+	Taxi taxi(1, TaxiType::UBER, 2.5);
+
+	//cout << taxi;		//display all the taxi data to the console
+
+	//cin >> taxi;		//read the taxi values from the console (including the array)
+
+	//taxi = taxi + 20;	//adds a new ride that was 20 km long
+	//taxi = 15 + taxi;	//adds a new ride that was 15 km long
+
+	//taxi *= 2;			//multiply the price per km
+
+	//Taxi copy = taxi++;				//increments the price per km
+
+	//cout << copy;
+	//cout << taxi;
+
+	//Taxi otherCopy = ++taxi;		//increments the price per km
+
+	//cout << otherCopy;
+	//cout << taxi;
+
+	//if (otherCopy == copy) {
+	//	cout << endl << "They have the same total revenue";
+	//}
+
+	//if (!taxi) {
+	//	cout << endl << "Total revenue is 0";
+	//}
+
+	//float partialRevenue = taxi(1, 3);	//computes the revenue for the rides with index between 1 and 3; 
+											//index between 0 and n-1
+											//	if the index values are wrong (outside array boundaries) you return 0
+
+	//int secondRide = taxi[1];				//gets the 2nd ride distance
+
+	//taxi[1] = 5;							//changes the 2nd ride distance
+
+	//cout << taxi;
+
 }
 
-//12. The function below receives as parameters a dinamically allocated array of pointers to Taxi together with its number of elements
-//Return the value of the most expensive car from this array
-double getTheMostExpensiveVehicle(Taxi** vector, int nr_masini)
-{
-	return 0.0f;
-}
+
 
