@@ -1,0 +1,46 @@
+
+Students list
+Student data: 
+Name: John
+Age: 23
+Grades: 10 10 9 
+Student data: 
+Name: John
+Age: 23
+Grades: 10 10 9 
+Students list
+Student data: 
+Name: John
+Age: 23
+Grades: 10 10 9 
+Student data: 
+Name: John
+Age: 23
+Grades: 10 10 9 
+Students list
+Student data: 
+Name: John
+Age: 23
+Grades: 10 10 9 
+Student data: 
+Name: John
+Age: 23
+Grades: 10 10 9 
+Students list
+Student data: 
+Name: John
+Age: 23
+Grades: 10 10 9 
+Student data: 
+Name: John
+Age: 23
+Grades: 10 10 9 
+Students list
+Student data: 
+Name: John
+Age: 23
+Grades: 10 10 9 
+Student data: 
+Name: John
+Age: 23
+Grades: 10 10 9 
